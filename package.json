@@ -2,19 +2,19 @@
   "name": "modbus-modulator",
   "scripts": {
     "clobber": "npx projen clobber",
+    "demo": "npx projen demo",
     "compile": "npx projen compile",
     "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
     "test:watch": "npx projen test:watch",
     "test:update": "npx projen test:update",
-    "upgrade-dependencies": "npx projen upgrade-dependencies",
+    "upgrade": "npx projen upgrade",
     "upgrade-projen": "npx projen upgrade-projen",
     "default": "npx projen default",
     "watch": "npx projen watch",
     "eslint": "npx projen eslint",
-    "projen": "npx projen",
-    "start": "npx projen start"
+    "projen": "npx projen"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
@@ -32,6 +32,9 @@
     "projen": "^0.27.36",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "modbus-serial": "^8.0.3"
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",

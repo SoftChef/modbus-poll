@@ -1,0 +1,30 @@
+{
+  "clients": [
+    {
+      "type": "ModbusTCP",
+      "name": "tcp1",
+      "host": "127.0.0.1",
+      "port": "8502"
+    }
+  ],
+  "nodes": [
+    {
+      "client": "tcp1",
+      "slaveId": "1",
+      "functionCode": "FC3",
+      "address": 1,
+      "quantity": 1,
+      "decimal": 2,
+      "property": "test.key1"
+    },
+    {
+      "client": "tcp1",
+      "slaveId": "1",
+      "functionCode": "FC3",
+      "address": 2,
+      "quantity": 1,
+      "decimal": 0,
+      "property": "test.key2"
+    }
+  ]
+}
