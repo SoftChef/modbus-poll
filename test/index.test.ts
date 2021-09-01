@@ -25,3 +25,7 @@
 //     // expect(1).toEqual(1);
 //   });
 // });
+
+test('test', () => {
+  expect(1).toEqual(1);
+});
