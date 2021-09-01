@@ -121,7 +121,7 @@ export class ModbusPoll extends EventEmitter {
   }
 
   public async write(_property: string, _value: number): Promise<void> {
-    // console.log(this.nodes);
+    console.log(this.nodes);
   }
 
 };
