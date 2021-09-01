@@ -16,7 +16,7 @@ const project = new TypeScriptAppProject({
   defaultReleaseBranch: 'main',
   name: '@softchef/modbus-poll',
   repositoryUrl: 'https://github.com/SoftChef/modbus-poll.git',
-  // release: true,
+  release: true,
   // releaseToNpm: true,
   package: true,
   entrypoint: 'lib/index.js',
