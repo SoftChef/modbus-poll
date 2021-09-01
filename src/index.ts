@@ -1,1 +1,1 @@
-export * from './modbus-modulator';
+export * from './modbus-poll';

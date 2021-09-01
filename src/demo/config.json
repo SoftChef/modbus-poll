@@ -1,30 +1,37 @@
-{
-  "clients": [
-    {
-      "type": "ModbusTCP",
-      "name": "tcp1",
-      "host": "127.0.0.1",
-      "port": "8502"
-    }
-  ],
-  "nodes": [
-    {
-      "client": "tcp1",
-      "slaveId": "1",
-      "functionCode": "FC3",
-      "address": 1,
-      "quantity": 1,
-      "decimal": 2,
-      "property": "test.key1"
-    },
-    {
-      "client": "tcp1",
-      "slaveId": "1",
-      "functionCode": "FC3",
-      "address": 2,
-      "quantity": 1,
-      "decimal": 0,
-      "property": "test.key2"
-    }
-  ]
-}
+[
+  {
+    "type": "ModbusRTU",
+    "name": "rtu1",
+    "path": "/dev/tty.usbserial-14240",
+    "baudRate": "9600",
+    "interval": 1,
+    "nodes": [
+      {
+        "thingName": "relay",
+        "property": "status",
+        "slaveId": 1,
+        "functionCode": "0x01",
+        "address": "0xFF",
+        "quantity": 1
+      },
+      {
+        "thingName": "sht20",
+        "property": "temperature",
+        "slaveId": 2,
+        "functionCode": "0x04",
+        "address": "0x01",
+        "quantity": 1,
+        "decimal": 1
+      },
+      {
+        "thingName": "sht20",
+        "property": "humidity",
+        "slaveId": 2,
+        "functionCode": "0x04",
+        "address": "0x02",
+        "quantity": 1,
+        "decimal": 1
+      }
+    ]
+  }
+]

@@ -5,6 +5,14 @@
       "type": "build"
     },
     {
+      "name": "@types/lodash",
+      "type": "build"
+    },
+    {
+      "name": "@types/mathjs",
+      "type": "build"
+    },
+    {
       "name": "@types/node",
       "version": "^10.17.0",
       "type": "build"
@@ -62,6 +70,14 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "lodash",
+      "type": "runtime"
+    },
+    {
+      "name": "mathjs",
+      "type": "runtime"
     },
     {
       "name": "modbus-serial",
