@@ -18,7 +18,7 @@ export {
   writeFunctionCodes,
 };
 
-export interface ModbusNodeConfig {
+export interface ModbusSensorConfig {
 
   thingName: string;
 
@@ -26,14 +26,26 @@ export interface ModbusNodeConfig {
 
   slaveId: number;
 
-  functionCode: '0x01' | '0x02' | '0x03' | '0x04' | '0x05' | '0x06' | '0x14' | '0x15' | '0x16' | '0x43';
+  functionCode: '0x01' | '0x02' | '0x03' | '0x04';
 
   address: number;
 
   quantity: number;
 
-  command: number;
-
   decimal?: number;
+
+}
+
+export interface ModbusActuatorConfig {
+
+  thingName: string;
+
+  property: string;
+
+  slaveId: number;
+
+  functionCode: '0x05' | '0x06' | '0x14' | '0x15' | '0x16';
+
+  address: number;
 
 }

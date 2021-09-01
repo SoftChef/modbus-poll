@@ -4,8 +4,8 @@
     "name": "rtu1",
     "path": "/dev/tty.usbserial-14240",
     "baudRate": "9600",
-    "interval": 1,
-    "nodes": [
+    "interval": 3,
+    "sensors": [
       {
         "thingName": "relay",
         "property": "status",
@@ -21,7 +21,7 @@
         "functionCode": "0x04",
         "address": "0x01",
         "quantity": 1,
-        "decimal": 1
+        "decimal": -1
       },
       {
         "thingName": "sht20",
@@ -30,7 +30,72 @@
         "functionCode": "0x04",
         "address": "0x02",
         "quantity": 1,
-        "decimal": 1
+        "decimal": -1
+      }
+    ],
+    "actuators": [
+      {
+        "thingName": "relay",
+        "property": "all",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0xFF"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch1",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x00"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch2",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x01"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch3",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x02"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch4",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x03"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch5",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x04"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch6",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x05"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch7",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x06"
+      },
+      {
+        "thingName": "relay",
+        "property": "ch8",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0x07"
       }
     ]
   }

@@ -3,9 +3,10 @@ import {
   Duration,
   // Duration,
   ModbusClientType,
-  ModbusNodeConfig,
+  ModbusSensorConfig,
   ModbusRTUClientConfig,
   ModbusTCPClientConfig,
+  ModbusActuatorConfig,
 } from '../constracts';
 import { ModbusPoll } from '../modbus-poll';
 /**
@@ -27,18 +28,29 @@ import { ModbusPoll } from '../modbus-poll';
 async function handler() {
   const modbusClientsConfig: (ModbusRTUClientConfig | ModbusTCPClientConfig)[] = loadModbusClientsConfig();
   // Read
+  let modbusPolls: {
+    [name: string]: ModbusPoll;
+  } = {};
   for (const modbusClientConfig of modbusClientsConfig) {
     const modbusPoll = new ModbusPoll(modbusClientConfig);
     await modbusPoll.connect();
-    modbusPoll.startPulling();
+    modbusPoll.startPolling();
     modbusPoll.on('data', (data) => {
       console.log(data);
     });
+    modbusPolls[modbusClientConfig.name] = modbusPoll;
   }
   // Write
-  setTimeout(() => {
-    // modbusm
-  }, 5000);
+  setTimeout(async () => {
+    await modbusPolls.rtu1.write('relay.ch1', 0x00);
+    await modbusPolls.rtu1.write('relay.ch2', 0x00);
+    await modbusPolls.rtu1.write('relay.ch3', 0x00);
+    await modbusPolls.rtu1.write('relay.ch4', 0x00);
+    await modbusPolls.rtu1.write('relay.ch5', 0x00);
+    await modbusPolls.rtu1.write('relay.ch6', 0x00);
+    await modbusPolls.rtu1.write('relay.ch7', 0x00);
+    await modbusPolls.rtu1.write('relay.ch8', 0x00);
+  }, 1000);
 };
 
 function loadModbusClientsConfig(): (ModbusRTUClientConfig | ModbusTCPClientConfig)[] {
@@ -49,7 +61,8 @@ function loadModbusClientsConfig(): (ModbusRTUClientConfig | ModbusTCPClientConf
   ).map((configObject: { [key: string]: any }) => {
     configObject.interval = Duration.seconds(configObject.interval ?? 10);
     configObject.timeout = Duration.seconds(configObject.timeout ?? 5);
-    configObject.nodes = configObject.nodes as ModbusNodeConfig[];
+    configObject.sensors = configObject.sensors as ModbusSensorConfig[];
+    configObject.actuators = configObject.actuators as ModbusActuatorConfig[];
     return configObject;
   });
   for (const clientConfig of config) {

@@ -16,7 +16,8 @@ import {
 } from 'modbus-serial/ModbusRTU';
 import {
   ModbusClientType,
-  ModbusNodeConfig,
+  ModbusSensorConfig,
+  ModbusActuatorConfig,
   ModbusRTUClientConfig,
   ModbusTCPClientConfig,
   readFunctionCodes,
@@ -30,8 +31,12 @@ export class ModbusPoll extends EventEmitter {
 
   private readonly config: ModbusRTUClientConfig | ModbusTCPClientConfig;
 
-  private readonly nodes: {
-    [property: string]: ModbusNodeConfig;
+  private readonly sensors: {
+    [property: string]: ModbusSensorConfig;
+  };
+
+  private readonly actuators: {
+    [property: string]: ModbusActuatorConfig;
   };
 
   private timer: NodeJS.Timer | null;
@@ -41,7 +46,22 @@ export class ModbusPoll extends EventEmitter {
     this.name = config.name;
     this.modbusClient = new ModbusRTU();
     this.config = config;
-    this.nodes = keyBy(config.nodes, 'property');
+    this.sensors = keyBy(
+      (config.sensors ?? []).map((sensorConfig: ModbusSensorConfig) => {
+        return {
+          ...sensorConfig,
+          key: `${sensorConfig.thingName}.${sensorConfig.property}`,
+        };
+      }), 'key',
+    );
+    this.actuators = keyBy(
+      (config.actuators ?? []).map((actuatorConfig: ModbusActuatorConfig) => {
+        return {
+          ...actuatorConfig,
+          key: `${actuatorConfig.thingName}.${actuatorConfig.property}`,
+        };
+      }), 'key',
+    );
     this.timer = null;
   }
 
@@ -73,55 +93,79 @@ export class ModbusPoll extends EventEmitter {
     });
   }
 
-  public startPulling() {
+  public startPolling() {
     this.timer = setInterval(async() => {
       let data: {
         [key: string]: any;
       } = {};
-      try {
-        for (const node of this.config.nodes) {
-          if (readFunctionCodes.indexOf(node.functionCode) === -1) {
-            continue;
-          }
-          let result: ReadCoilResult | ReadRegisterResult | null = null;
+      for (const node of Object.values(this.sensors)) {
+        if (readFunctionCodes.indexOf(node.functionCode) === -1) {
+          continue;
+        }
+        let result: ReadCoilResult | ReadRegisterResult | null = null;
+        try {
           // Switch node's slave id
           this.modbusClient.setID(node.slaveId);
           switch (node.functionCode) {
             case '0x01':
-              result = await this.modbusClient.readCoils(node.address, node.quantity);
+              result = await this.modbusClient.readCoils(node.address, node.quantity ?? 1);
               break;
             case '0x02':
-              result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity);
+              result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity ?? 1);
               break;
             case '0x03':
-              result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity);
+              result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity ?? 1);
               break;
             case '0x04':
-              result = await this.modbusClient.readInputRegisters(node.address, node.quantity);
+              result = await this.modbusClient.readInputRegisters(node.address, node.quantity ?? 1);
               break;
           }
-          let value: number | Array<number | string> | undefined = undefined;
-          if (result !== null) {
-            if (result.data.length === 1) {
-              value = result.data.pop() as number;
-            } else {
-              value = result.data as Array<number | string>;
-            }
-          }
-          if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
-            value = round(value * (pow(10, node.decimal) as number), 2);
-          }
-          setObject(data, `${node.thingName}.${node.property}`, value);
+        } catch (error) {
+          console.log('Poll Error', error);
         }
+        let value: number | Array<number | string> | undefined = undefined;
+        if (result !== null) {
+          if (result.data.length === 1) {
+            value = result.data.pop() as number;
+          } else {
+            value = result.data as Array<number | string>;
+          }
+        }
+        if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
+          value = round(value * (pow(10, node.decimal) as number), 2);
+        }
+        setObject(data, `${node.thingName}.${node.property}`, value);
+      }
+      if (Object.keys(data).length > 0) {
         this.emit('data', data);
-      } catch (error) {
-        console.log(error);
       }
     }, this.config.interval.valueOfMilliseconds());
   }
 
-  public async write(_property: string, _value: number): Promise<void> {
-    console.log(this.nodes);
+  public async write(target: string, value: number): Promise<void> {
+    if (this.actuators[target] !== undefined) {
+      const actuator = this.actuators[target];
+      try {
+        switch (actuator.functionCode) {
+          case '0x05':
+            console.log(actuator.address, value);
+            await this.modbusClient.writeCoil(actuator.address, value === 1);
+            break;
+          case '0x06':
+          case '0x14':
+          case '0x15':
+            console.log(actuator.address, value);
+            await this.modbusClient.writeRegister(actuator.address, 0);
+            // this.modbusClient.writeFC15(1, actuator.address, [true], (err, res) => {
+            //   console.log('res', err, res);
+            // });
+            break;
+          case '0x16':
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
 };

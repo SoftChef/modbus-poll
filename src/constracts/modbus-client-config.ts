@@ -1,8 +1,9 @@
 import { SerialPortOptions } from 'modbus-serial/ModbusRTU';
 import {
   Duration,
+  ModbusActuatorConfig,
   ModbusClientType,
-  ModbusNodeConfig,
+  ModbusSensorConfig,
 } from '.';
 
 export interface ModbusClientConfig {
@@ -15,7 +16,9 @@ export interface ModbusClientConfig {
 
   timeout: Duration;
 
-  nodes: ModbusNodeConfig[];
+  sensors?: ModbusSensorConfig[];
+
+  actuators?: ModbusActuatorConfig[];
 
 }
 
