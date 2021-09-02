@@ -51,7 +51,7 @@ export class ModbusPoll extends EventEmitter {
     this.config = config;
     if (config.sensors) {
       this.sensors = keyBy(
-        (config.sensors ?? []).map((sensorConfig: ModbusSensorConfig) => {
+        config.sensors.map((sensorConfig: ModbusSensorConfig) => {
           return {
             ...sensorConfig,
             key: `${sensorConfig.thingName}.${sensorConfig.property}`,
@@ -61,7 +61,7 @@ export class ModbusPoll extends EventEmitter {
     }
     if (config.actuators) {
       this.actuators = keyBy(
-        (config.actuators ?? []).map((actuatorConfig: ModbusActuatorConfig) => {
+        config.actuators.map((actuatorConfig: ModbusActuatorConfig) => {
           return {
             ...actuatorConfig,
             key: `${actuatorConfig.thingName}.${actuatorConfig.property}`,

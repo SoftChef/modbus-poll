@@ -42,8 +42,8 @@ junit.xml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.json
-!/src/
 /lib
+!/src/
 /dist/
 !/tsconfig.jest.json
 !/.eslintrc.json
