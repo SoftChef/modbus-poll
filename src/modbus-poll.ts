@@ -36,36 +36,39 @@ export class ModbusPoll extends EventEmitter {
 
   private readonly sensors: {
     [property: string]: ModbusSensorConfig;
-  };
+  } = {};
 
   private readonly actuators: {
     [property: string]: ModbusActuatorConfig;
-  };
+  } = {};
 
-  private timer: NodeJS.Timer | null;
+  private timer: NodeJS.Timer | null = null;
 
   public constructor(config: ModbusRTUClientConfig | ModbusTCPClientConfig) {
     super();
     this.name = config.name;
     this.modbusClient = new ModbusRTU();
     this.config = config;
-    this.sensors = keyBy(
-      (config.sensors ?? []).map((sensorConfig: ModbusSensorConfig) => {
-        return {
-          ...sensorConfig,
-          key: `${sensorConfig.thingName}.${sensorConfig.property}`,
-        };
-      }), 'key',
-    );
-    this.actuators = keyBy(
-      (config.actuators ?? []).map((actuatorConfig: ModbusActuatorConfig) => {
-        return {
-          ...actuatorConfig,
-          key: `${actuatorConfig.thingName}.${actuatorConfig.property}`,
-        };
-      }), 'key',
-    );
-    this.timer = null;
+    if (config.sensors) {
+      this.sensors = keyBy(
+        (config.sensors ?? []).map((sensorConfig: ModbusSensorConfig) => {
+          return {
+            ...sensorConfig,
+            key: `${sensorConfig.thingName}.${sensorConfig.property}`,
+          };
+        }), 'key',
+      );
+    }
+    if (config.actuators) {
+      this.actuators = keyBy(
+        (config.actuators ?? []).map((actuatorConfig: ModbusActuatorConfig) => {
+          return {
+            ...actuatorConfig,
+            key: `${actuatorConfig.thingName}.${actuatorConfig.property}`,
+          };
+        }), 'key',
+      );
+    }
   }
 
   public async connect(): Promise<void> {
@@ -97,7 +100,6 @@ export class ModbusPoll extends EventEmitter {
   }
 
   public startPolling() {
-    console.log(this.config.interval);
     this.timer = setInterval(async() => {
       let data: {
         [key: string]: any;
