@@ -114,16 +114,16 @@ export class ModbusPoll extends EventEmitter {
           this.modbusClient.setID(node.slaveId);
           switch (node.functionCode) {
             case '0x01':
-              result = await this.modbusClient.readCoils(node.address, node.quantity ?? 1);
+              result = await this.modbusClient.readCoils(node.address, node.quantity || 1);
               break;
             case '0x02':
-              result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity ?? 1);
+              result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity || 1);
               break;
             case '0x03':
-              result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity ?? 1);
+              result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity || 1);
               break;
             case '0x04':
-              result = await this.modbusClient.readInputRegisters(node.address, node.quantity ?? 1);
+              result = await this.modbusClient.readInputRegisters(node.address, node.quantity || 1);
               break;
           }
         } catch (error) {
