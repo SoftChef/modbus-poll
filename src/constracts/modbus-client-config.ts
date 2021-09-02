@@ -1,6 +1,5 @@
 import { SerialPortOptions } from 'modbus-serial/ModbusRTU';
 import {
-  Duration,
   ModbusActuatorConfig,
   ModbusClientType,
   ModbusSensorConfig,
@@ -12,9 +11,9 @@ export interface ModbusClientConfig {
 
   name: string;
 
-  interval: Duration;
+  interval: number;
 
-  timeout: Duration;
+  timeout: number;
 
   sensors?: ModbusSensorConfig[];
 

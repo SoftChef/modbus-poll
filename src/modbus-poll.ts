@@ -13,6 +13,9 @@ import ModbusRTU from 'modbus-serial';
 import {
   ReadCoilResult,
   ReadRegisterResult,
+  WriteCoilResult,
+  WriteMultipleResult,
+  WriteRegisterResult,
 } from 'modbus-serial/ModbusRTU';
 import {
   ModbusClientType,
@@ -68,7 +71,7 @@ export class ModbusPoll extends EventEmitter {
   public async connect(): Promise<void> {
     // Set modbus client timeout
     this.modbusClient.setTimeout(
-      this.config.timeout.valueOfMilliseconds(),
+      this.config.timeout,
     );
     if (this.config.type === ModbusClientType.ModbusRTU) {
       return this.modbusClient.connectRTU(this.config.path, this.config.serialPortOptions);
@@ -94,6 +97,7 @@ export class ModbusPoll extends EventEmitter {
   }
 
   public startPolling() {
+    console.log(this.config.interval);
     this.timer = setInterval(async() => {
       let data: {
         [key: string]: any;
@@ -139,32 +143,34 @@ export class ModbusPoll extends EventEmitter {
       if (Object.keys(data).length > 0) {
         this.emit('data', data);
       }
-    }, this.config.interval.valueOfMilliseconds());
+    }, this.config.interval);
   }
 
-  public async write(target: string, value: number): Promise<void> {
+  public async write(target: string, value: number | number[] | boolean | boolean[]): Promise<any> {
     if (this.actuators[target] !== undefined) {
       const actuator = this.actuators[target];
+      let result: WriteCoilResult | WriteRegisterResult | WriteMultipleResult | null = null;
       try {
         switch (actuator.functionCode) {
           case '0x05':
-            console.log(actuator.address, value);
-            await this.modbusClient.writeCoil(actuator.address, value === 1);
+            result = await this.modbusClient.writeCoil(actuator.address, <boolean>value);
             break;
           case '0x06':
-          case '0x14':
+            result = await this.modbusClient.writeRegister(actuator.address, <number>value);
+            break;
+          // case '0x14':
           case '0x15':
-            console.log(actuator.address, value);
-            await this.modbusClient.writeRegister(actuator.address, 0);
-            // this.modbusClient.writeFC15(1, actuator.address, [true], (err, res) => {
-            //   console.log('res', err, res);
-            // });
+            result = await this.modbusClient.writeCoils(actuator.address, <boolean[]>value);
             break;
           case '0x16':
+            result = await this.modbusClient.writeRegisters(actuator.address, <number[]>value);
+            break;
         }
       } catch (error) {
         console.error(error);
+        return Promise.reject(error);
       }
+      return Promise.resolve(result);
     }
   }
 

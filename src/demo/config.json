@@ -4,7 +4,7 @@
     "name": "rtu1",
     "path": "/dev/tty.usbserial-14240",
     "baudRate": "9600",
-    "interval": 3,
+    "interval": 3000,
     "sensors": [
       {
         "thingName": "relay",
