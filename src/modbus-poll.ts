@@ -23,25 +23,36 @@ import {
   ModbusActuatorConfig,
   ModbusRTUClientConfig,
   ModbusTCPClientConfig,
-  readFunctionCodes,
 } from './constracts';
 
 export class ModbusPoll extends EventEmitter {
-
+  /**
+   * Name for identify
+   */
   public readonly name: string;
-
+  /**
+   * Modbus client instance
+   */
   private readonly modbusClient: ModbusRTU;
-
+  /**
+   * Modbus config
+   */
   private readonly config: ModbusRTUClientConfig | ModbusTCPClientConfig;
-
+  /**
+   * All of Modbus sensors by property
+   */
   private readonly sensors: {
     [property: string]: ModbusSensorConfig;
   } = {};
-
+  /**
+   * All of Modbus actuators by property
+   */
   private readonly actuators: {
     [property: string]: ModbusActuatorConfig;
   } = {};
-
+  /**
+   * Timeout's timer
+   */
   private timer: NodeJS.Timer | null = null;
 
   public constructor(config: ModbusRTUClientConfig | ModbusTCPClientConfig) {
@@ -105,41 +116,7 @@ export class ModbusPoll extends EventEmitter {
         [key: string]: any;
       } = {};
       for (const node of Object.values(this.sensors)) {
-        if (readFunctionCodes.indexOf(node.functionCode) === -1) {
-          continue;
-        }
-        let result: ReadCoilResult | ReadRegisterResult | null = null;
-        try {
-          // Switch node's slave id
-          this.modbusClient.setID(node.slaveId);
-          switch (node.functionCode) {
-            case '0x01':
-              result = await this.modbusClient.readCoils(node.address, node.quantity || 1);
-              break;
-            case '0x02':
-              result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity || 1);
-              break;
-            case '0x03':
-              result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity || 1);
-              break;
-            case '0x04':
-              result = await this.modbusClient.readInputRegisters(node.address, node.quantity || 1);
-              break;
-          }
-        } catch (error) {
-          console.log('Poll Error', error);
-        }
-        let value: number | Array<number | string> | undefined = undefined;
-        if (result !== null) {
-          if (result.data.length === 1) {
-            value = result.data.pop() as number;
-          } else {
-            value = result.data as Array<number | string>;
-          }
-        }
-        if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
-          value = round(value * (pow(10, node.decimal) as number), 2);
-        }
+        const value = await this.read(`${node.thingName}.${node.property}`);
         setObject(data, `${node.thingName}.${node.property}`, value);
       }
       if (Object.keys(data).length > 0) {
@@ -148,32 +125,78 @@ export class ModbusPoll extends EventEmitter {
     }, this.config.interval);
   }
 
-  public async write(target: string, value: number | number[] | boolean | boolean[]): Promise<any> {
-    if (this.actuators[target] !== undefined) {
-      const actuator = this.actuators[target];
-      let result: WriteCoilResult | WriteRegisterResult | WriteMultipleResult | null = null;
-      try {
-        switch (actuator.functionCode) {
-          case '0x05':
-            result = await this.modbusClient.writeCoil(actuator.address, <boolean>value);
-            break;
-          case '0x06':
-            result = await this.modbusClient.writeRegister(actuator.address, <number>value);
-            break;
-          // case '0x14':
-          case '0x15':
-            result = await this.modbusClient.writeCoils(actuator.address, <boolean[]>value);
-            break;
-          case '0x16':
-            result = await this.modbusClient.writeRegisters(actuator.address, <number[]>value);
-            break;
-        }
-      } catch (error) {
-        console.error(error);
-        return Promise.reject(error);
-      }
-      return Promise.resolve(result);
+  public async read(target: | string): Promise<any> {
+    if (this.sensors[target] === undefined) {
+      return Promise.reject(
+        new Error('Target not found'),
+      );
     }
+    const node = this.sensors[target];
+    let result: ReadCoilResult | ReadRegisterResult | null = null;
+    try {
+      // Switch node's slave id
+      await this.modbusClient.setID(node.slaveId);
+      switch (node.functionCode) {
+        case '0x01':
+          result = await this.modbusClient.readCoils(node.address, node.quantity || 1);
+          break;
+        case '0x02':
+          result = await this.modbusClient.readDiscreteInputs(node.address, node.quantity || 1);
+          break;
+        case '0x03':
+          result = await this.modbusClient.readHoldingRegisters(node.address, node.quantity || 1);
+          break;
+        case '0x04':
+          result = await this.modbusClient.readInputRegisters(node.address, node.quantity || 1);
+          break;
+      }
+    } catch (error) {
+      console.log('Poll Error', error);
+    }
+    let value: number | Array<number | string> | undefined = undefined;
+    if (result !== null) {
+      if (result.data.length === 1) {
+        value = result.data.pop() as number;
+      } else {
+        value = result.data as Array<number | string>;
+      }
+    }
+    if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
+      value = round(value * (pow(10, node.decimal) as number), 2);
+    }
+    return value;
+  }
+
+  public async write(target: string, value: number | number[] | boolean | boolean[]): Promise<any> {
+    if (this.actuators[target] === undefined) {
+      return Promise.reject(
+        new Error('Target not found'),
+      );
+    }
+    const actuator = this.actuators[target];
+    let result: WriteCoilResult | WriteRegisterResult | WriteMultipleResult | null = null;
+    try {
+      await this.modbusClient.setID(actuator.slaveId);
+      switch (actuator.functionCode) {
+        case '0x05':
+          result = await this.modbusClient.writeCoil(actuator.address, <boolean>value);
+          break;
+        case '0x06':
+          result = await this.modbusClient.writeRegister(actuator.address, <number>value);
+          break;
+        // case '0x14':
+        case '0x15':
+          result = await this.modbusClient.writeCoils(actuator.address, <boolean[]>value);
+          break;
+        case '0x16':
+          result = await this.modbusClient.writeRegisters(actuator.address, <number[]>value);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+    return Promise.resolve(result);
   }
 
 };
