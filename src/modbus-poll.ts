@@ -21,6 +21,7 @@ import {
   ModbusClientType,
   ModbusSensorConfig,
   ModbusActuatorConfig,
+  ModbusRTUBufferedClientConfig,
   ModbusRTUClientConfig,
   ModbusTCPClientConfig,
 } from './constracts';
@@ -37,7 +38,7 @@ export class ModbusPoll extends EventEmitter {
   /**
    * Modbus config
    */
-  private readonly config: ModbusRTUClientConfig | ModbusTCPClientConfig;
+  private readonly config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig;
   /**
    * All of Modbus sensors by property
    */
@@ -55,7 +56,7 @@ export class ModbusPoll extends EventEmitter {
    */
   private timer: NodeJS.Timer | null = null;
 
-  public constructor(config: ModbusRTUClientConfig | ModbusTCPClientConfig) {
+  public constructor(config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig) {
     super();
     this.name = config.name;
     this.modbusClient = new ModbusRTU();
@@ -87,17 +88,26 @@ export class ModbusPoll extends EventEmitter {
     this.modbusClient.setTimeout(
       this.config.timeout,
     );
-    if (this.config.type === ModbusClientType.ModbusRTU) {
-      return this.modbusClient.connectRTU(this.config.path, this.config.serialPortOptions);
-    } else if (this.config.type === ModbusClientType.ModbusTCP) {
-      return this.modbusClient.connectTCP(this.config.host, {
-        port: this.config.port,
-      });
-    } else {
-      return Promise.reject(
-        new Error('Modbus client type not supported.'),
-      );
+    let connection: Promise<void>;
+    switch (this.config.type) {
+      case ModbusClientType.ModbusRTU:
+        connection = this.modbusClient.connectRTU(this.config.path, this.config.serialPortOptions);
+        break;
+      case ModbusClientType.ModbusRTUBuffered:
+        connection = this.modbusClient.connectRTUBuffered(this.config.path, this.config.serialPortOptions);
+        break;
+      case ModbusClientType.ModbusTCP:
+        connection = this.modbusClient.connectTCP(this.config.host, {
+          port: this.config.port,
+        });
+        break;
+      default:
+        connection = Promise.reject(
+          new Error('Modbus client type not supported.'),
+        );
+        break;
     }
+    return connection;
   }
 
   public async disconnect(): Promise<void> {
