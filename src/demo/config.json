@@ -3,9 +3,23 @@
     "type": "ModbusRTU",
     "name": "rtu1",
     "path": "/dev/tty.usbserial-14240",
-    "baudRate": "9600",
+    "serialPortOptions": {
+      "baudRate": 9600,
+      "dataBits": 8,
+      "parity": "none",
+      "stopBits": 1
+    },
     "interval": 3000,
+    "timeout": 1000,
     "sensors": [
+      {
+        "thingName": "relay",
+        "property": "slaveId",
+        "slaveId": 1,
+        "functionCode": "0x03",
+        "address": "0x4000",
+        "quantity": 2
+      },
       {
         "thingName": "relay",
         "property": "status",
@@ -34,6 +48,13 @@
       }
     ],
     "actuators": [
+      {
+        "thingName": "relay",
+        "property": "slaveId",
+        "slaveId": 1,
+        "functionCode": "0x06",
+        "address": "0x4000"
+      },
       {
         "thingName": "relay",
         "property": "all",

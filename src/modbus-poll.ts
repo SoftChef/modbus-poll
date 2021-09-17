@@ -121,18 +121,21 @@ export class ModbusPoll extends EventEmitter {
   }
 
   public startPolling() {
-    this.timer = setInterval(async() => {
+    const polling = async () => {
       let data: {
         [key: string]: any;
       } = {};
       for (const node of Object.values(this.sensors)) {
         const value = await this.read(`${node.thingName}.${node.property}`);
+        await this.delay(this.config.delay);
         setObject(data, `${node.thingName}.${node.property}`, value);
       }
       if (Object.keys(data).length > 0) {
         this.emit('data', data);
       }
-    }, this.config.interval);
+    };
+    void polling();
+    this.timer = setInterval(polling, this.config.interval);
   }
 
   public async read(target: | string): Promise<any> {
@@ -214,6 +217,12 @@ export class ModbusPoll extends EventEmitter {
       return Promise.reject(error);
     }
     return Promise.resolve(result);
+  }
+
+  private delay(millisecond: number): Promise<boolean> {
+    return new Promise(resolve => {
+      setTimeout(resolve, millisecond);
+    });
   }
 
 };
