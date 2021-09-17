@@ -163,16 +163,23 @@ export class ModbusPoll extends EventEmitter {
     } catch (error) {
       console.log('Poll Error', error);
     }
-    let value: number | Array<number | string> | undefined = undefined;
-    if (result !== null) {
-      if (node.endian === 'little') {
-        value = result.buffer.readIntLE(0, node.quantity);
-      } else {
-        value = result.buffer.readIntBE(0, node.quantity);
+    let value: number | Array<number | string | boolean> | undefined = undefined;
+    if (result) {
+      switch (node.functionCode) {
+        case '0x01':
+        case '0x02':
+          value = result.data as Array<boolean>;
+          break;
+        case '0x03':
+        case '0x04':
+          if (node.endian === 'little') {
+            value = result.buffer.readIntLE(0, node.quantity * 2);
+          } else {
+            value = result.buffer.readIntBE(0, node.quantity * 2);
+          }
+          value = round(value * (pow(10, node.decimal || 1) as number), 2);
+          break;
       }
-    }
-    if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
-      value = round(value * (pow(10, node.decimal) as number), 2);
     }
     return value;
   }
