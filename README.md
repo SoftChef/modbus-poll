@@ -1,4 +1,9 @@
 # Modbus Poll
+
+[![npm version](https://badge.fury.io/js/%40softchef%2Fmodbus-poll.svg)](https://badge.fury.io/js/%40softchef%2Fmodbus-poll)
+![Release](https://github.com/SoftChef/modbus-poll/workflows/Release/badge.svg)
+![npm](https://img.shields.io/npm/dt/@softchef/modbus-poll?label=NPM%20Downloads&color=orange)
+
 Modbus Poll can automation polling the Modbus devices by Modbus map table and convert to JSON object by defined property. This package is used [modbus-serial](https://www.npmjs.com/package/modbus-serial) package to connect Modbus protocol and operate Modbus commands.
 ## Installation
 
@@ -89,3 +94,4 @@ modbusPoll.write('relay.ch1', 1, 1000)
 // Control relay.ch1 to "off" after 1000 ms
 modbusPoll.write('relay.ch1', 0)
 ```
+
