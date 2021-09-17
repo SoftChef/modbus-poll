@@ -15,6 +15,8 @@ export interface ModbusClientConfig {
 
   timeout: number;
 
+  delay: number;
+
   sensors?: ModbusSensorConfig[];
 
   actuators?: ModbusActuatorConfig[];
