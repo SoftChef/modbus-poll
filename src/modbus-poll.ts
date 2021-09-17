@@ -187,7 +187,7 @@ export class ModbusPoll extends EventEmitter {
     return value;
   }
 
-  public async write(target: string, value: number | number[] | boolean | boolean[]): Promise<any> {
+  public async write(target: string, value: number | number[] | boolean | boolean[], delay?: number): Promise<any> {
     if (this.actuators[target] === undefined) {
       return Promise.reject(
         new Error('Target not found'),
@@ -216,6 +216,7 @@ export class ModbusPoll extends EventEmitter {
       console.error(error);
       return Promise.reject(error);
     }
+    await this.delay(delay || this.config.delay);
     return Promise.resolve(result);
   }
 
