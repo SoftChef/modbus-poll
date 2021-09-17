@@ -32,6 +32,8 @@ export interface ModbusSensorConfig {
 
   quantity: number;
 
+  endian?: 'little' | 'big';
+
   decimal?: number;
 
 }

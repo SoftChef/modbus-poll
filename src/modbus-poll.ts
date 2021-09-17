@@ -165,10 +165,10 @@ export class ModbusPoll extends EventEmitter {
     }
     let value: number | Array<number | string> | undefined = undefined;
     if (result !== null) {
-      if (result.data.length === 1) {
-        value = result.data.pop() as number;
+      if (node.endian === 'little') {
+        value = result.buffer.readIntLE(0, node.quantity);
       } else {
-        value = result.data as Array<number | string>;
+        value = result.buffer.readIntBE(0, node.quantity);
       }
     }
     if (typeof value === 'number' && typeof node.decimal === 'number' && value > 0) {
