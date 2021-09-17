@@ -86,7 +86,7 @@ export class ModbusPoll extends EventEmitter {
   public async connect(): Promise<void> {
     // Set modbus client timeout
     this.modbusClient.setTimeout(
-      this.config.timeout,
+      this.config.timeout || 3000,
     );
     let connection: Promise<void>;
     switch (this.config.type) {
@@ -135,7 +135,7 @@ export class ModbusPoll extends EventEmitter {
       }
     };
     void polling();
-    this.timer = setInterval(polling, this.config.interval);
+    this.timer = setInterval(polling, this.config.interval || 3000);
   }
 
   public async read(target: | string): Promise<any> {
@@ -222,7 +222,7 @@ export class ModbusPoll extends EventEmitter {
 
   private delay(millisecond: number): Promise<boolean> {
     return new Promise(resolve => {
-      setTimeout(resolve, millisecond);
+      setTimeout(resolve, millisecond || 100);
     });
   }
 
