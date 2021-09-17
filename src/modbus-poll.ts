@@ -177,10 +177,14 @@ export class ModbusPoll extends EventEmitter {
         case '0x04':
           if (node.endian === 'little') {
             value = result.buffer.readIntLE(0, node.quantity * 2);
-          } else {
+          } else if (node.endian === 'big') {
             value = result.buffer.readIntBE(0, node.quantity * 2);
+          } else { // node.endian equal raw
+            value = result.data;
           }
-          value = round(value * (pow(10, node.decimal || 1) as number), 2);
+          if (typeof value === 'number') {
+            value = round(value * (pow(10, node.decimal || 1) as number), 2);
+          }
           break;
       }
     }

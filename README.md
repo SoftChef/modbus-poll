@@ -50,7 +50,7 @@ This module has not been tested on every single version of NodeJS. For best resu
 * `sensors[].functionCode`:: The Modbus function code. Supports `0x01`, `0x02`, `0x03`, `0x04`. Reference [modbus-serial functions](https://github.com/yaacov/node-modbus-serial#these-classes-are-implemented).
 * `sensors[].address`: The Modbus register address.
 * `sensors[].quantity`: Read data length.
-* `sensors[].endian?`: The payload's endial, `little` or `big`, Default is big
+* `sensors[].endian?`: The payload's endial, `little` or `big` or `raw`, Default is `raw`.
 * `sensors[].decimal?`: When data is a numberic, decimal will convert decimal places. Default is `0`. Ex: decimal is 2, data is `2635`, result is `26.35`.
 * `actuators`: Array of Modbus address table for control.
 * `actuators[].thingName`: Define device name.
