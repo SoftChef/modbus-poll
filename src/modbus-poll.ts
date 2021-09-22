@@ -26,6 +26,10 @@ import {
   ModbusTCPClientConfig,
 } from './constracts';
 
+type ModbusPollResult = number | Array<number | string | boolean> | { [key: string]: number | string | boolean } | undefined;
+
+type ModbusPollDecoder = (value: ReadCoilResult | ReadRegisterResult, context: Object) => ModbusPollResult;
+
 export class ModbusPoll extends EventEmitter {
   /**
    * Name for identify
@@ -55,8 +59,17 @@ export class ModbusPoll extends EventEmitter {
    * Timeout's timer
    */
   private timer: NodeJS.Timer | null = null;
+  /**
+   * Define decoders to convert results after poll, with node's config 'decoder' property
+   */
+  private decoders: {
+    [name: string]: ModbusPollDecoder;
+  } = {};
 
-  public constructor(config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig) {
+  public constructor(
+    config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig,
+    decoders?: { [name: string]: ModbusPollDecoder },
+  ) {
     super();
     this.name = config.name;
     this.modbusClient = new ModbusRTU();
@@ -81,6 +94,19 @@ export class ModbusPoll extends EventEmitter {
         }), 'key',
       );
     }
+    if (decoders) {
+      this.setDecoders(decoders);
+    }
+  }
+
+  public setDecoders(decoders: { [name: string]: ModbusPollDecoder }): ModbusPoll {
+    this.decoders = decoders;
+    return this;
+  }
+
+  public setDecoder(name: string, decoder: ModbusPollDecoder): ModbusPoll {
+    this.decoders[name] = decoder;
+    return this;
   }
 
   public async connect(): Promise<void> {
@@ -126,9 +152,8 @@ export class ModbusPoll extends EventEmitter {
         [key: string]: any;
       } = {};
       for (const node of Object.values(this.sensors)) {
-        const value = await this.read(`${node.thingName}.${node.property}`);
+        setObject(data, `${node.thingName}.${node.property}`, await this.read(`${node.thingName}.${node.property}`, data));
         await this.delay(this.config.delay);
-        setObject(data, `${node.thingName}.${node.property}`, value);
       }
       if (Object.keys(data).length > 0) {
         this.emit('data', data);
@@ -138,7 +163,7 @@ export class ModbusPoll extends EventEmitter {
     this.timer = setInterval(polling, this.config.interval || 3000);
   }
 
-  public async read(target: | string): Promise<any> {
+  public async read(target: string, context: Object): Promise<any> {
     if (this.sensors[target] === undefined) {
       return Promise.reject(
         new Error('Target not found'),
@@ -166,26 +191,30 @@ export class ModbusPoll extends EventEmitter {
     } catch (error) {
       console.log('Poll Error', error);
     }
-    let value: number | Array<number | string | boolean> | undefined = undefined;
+    let value: ModbusPollResult = undefined;
     if (result) {
-      switch (node.functionCode) {
-        case '0x01':
-        case '0x02':
-          value = result.data as Array<boolean>;
-          break;
-        case '0x03':
-        case '0x04':
-          if (node.endian === 'little') {
-            value = result.buffer.readIntLE(0, node.quantity * 2);
-          } else if (node.endian === 'big') {
-            value = result.buffer.readIntBE(0, node.quantity * 2);
-          } else { // node.endian equal raw
-            value = result.data;
-          }
-          if (typeof value === 'number') {
-            value = round(value * (pow(10, node.decimal || 1) as number), 2);
-          }
-          break;
+      if (node.decoder && this.decoders[node.decoder]) {
+        value = this.decoders[node.decoder](result, context);
+      } else {
+        switch (node.functionCode) {
+          case '0x01':
+          case '0x02':
+            value = result.data as Array<boolean>;
+            break;
+          case '0x03':
+          case '0x04':
+            if (node.endian === 'little') {
+              value = result.buffer.readIntLE(0, node.quantity * 2);
+            } else if (node.endian === 'big') {
+              value = result.buffer.readIntBE(0, node.quantity * 2);
+            } else { // node.endian equal raw
+              value = result.data;
+            }
+            if (typeof value === 'number') {
+              value = round(value * (pow(10, node.decimal || 1) as number), 2);
+            }
+            break;
+        }
       }
     }
     return value;
