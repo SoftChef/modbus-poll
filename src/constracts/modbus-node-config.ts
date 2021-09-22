@@ -36,6 +36,7 @@ export interface ModbusSensorConfig {
 
   decimal?: number;
 
+  decoder?: string;
 }
 
 export interface ModbusActuatorConfig {
@@ -49,5 +50,7 @@ export interface ModbusActuatorConfig {
   functionCode: '0x05' | '0x06' | '0x14' | '0x15' | '0x16';
 
   address: number;
+
+  encoder?: string;
 
 }
