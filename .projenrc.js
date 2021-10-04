@@ -1,8 +1,6 @@
 const {
   TypeScriptAppProject,
   NpmAccess,
-  ProjectType,
-  DependenciesUpgradeMechanism,
 } = require('projen');
 
 const AUTOMATION_TOKEN = 'PROJEN_GITHUB_TOKEN';
@@ -12,7 +10,6 @@ const project = new TypeScriptAppProject({
   authorName: 'MinChe Tsai',
   authorEmail: 'poke@softchef.com',
   npmAccess: NpmAccess.PUBLIC,
-  projectType: ProjectType.LIB,
   defaultReleaseBranch: 'main',
   name: '@softchef/modbus-poll',
   repositoryUrl: 'https://github.com/SoftChef/modbus-poll.git',
@@ -29,13 +26,13 @@ const project = new TypeScriptAppProject({
     '@types/mathjs',
     '@types/lodash',
   ],
-  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow({
+  depsUpgradeOptions: {
     ignoreProjen: false,
     workflowOptions: {
       labels: ['auto-approve', 'auto-merge'],
       secret: AUTOMATION_TOKEN,
     },
-  }),
+  },
   autoApproveOptions: {
     secret: 'GITHUB_TOKEN',
     allowedUsernames: ['MinCheTsai'],
