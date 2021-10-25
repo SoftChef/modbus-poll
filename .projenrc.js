@@ -17,6 +17,8 @@ const project = new TypeScriptAppProject({
   releaseToNpm: true,
   package: true,
   entrypoint: 'lib/index.js',
+  minNodeVersion: '12.7.0',
+  workflowNodeVersion: '12.13.0',
   deps: [
     'lodash',
     'mathjs',
