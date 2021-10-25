@@ -1,0 +1,533 @@
+[
+  {
+    "type": "ModbusRTUBuffered",
+    "name": "rtu1",
+    "path": "/dev/ttyS0",
+    "baudRate": 9600,
+    "interval": 1000,
+    "sensors": [
+      {
+        "thingName": "dae",
+        "property": "phaseVoltageA",
+        "slaveId": 1,
+        "functionCode": "0x03",
+        "address": "0x00",
+        "quantity": 2,
+        "decimal": -1
+      }
+    ],
+    "actuators": [
+      {
+        "thingName": "dae",
+        "property": "energy1A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x70"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy1B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x72"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy1C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x74"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy2A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x76"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy2B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x78"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy2C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x7A"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy3A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x7C"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy3B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x7E"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy3C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x80"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy4A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x82"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy4B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x84"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy4C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x86"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy5A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x88"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy5B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x8A"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy5C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x8C"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy6A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x8E"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy6B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x90"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy6C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x92"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy7A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x94"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy7B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x96"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy7C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x98"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy8A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x9A"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy8B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x9C"
+      },
+      {
+        "thingName": "dae",
+        "property": "energy8C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x9E"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy1A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xA0"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy1B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xA2"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy1C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xA4"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy2A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xA6"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy2B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xA8"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy2C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xAA"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy3A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xAC"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy3B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xAE"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy3C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xB0"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy4A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xB2"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy4B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xB4"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy4C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xB6"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy5A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xB8"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy5B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xBA"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy5C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xBC"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy6A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xBE"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy6B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xC0"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy6C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xC2"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy7A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xC4"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy7B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xC6"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy7C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xC8"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy8A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xCA"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy8B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xCC"
+      },
+      {
+        "thingName": "dae",
+        "property": "reactiveEnergy8C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0xCE"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio1A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0460"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio1B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0461"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio1C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0462"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio2A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0463"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio2B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0464"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio2C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0465"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio3A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0466"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio3B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0467"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio3C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0468"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio4A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0469"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio4B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046A"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio4C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046B"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio5A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046C"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio5B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046D"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio5C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046E"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio6A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x046F"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio6B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0470"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio6C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0471"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio7A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0472"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio7B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0473"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio7C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0474"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio8A",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0475"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio8B",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0476"
+      },
+      {
+        "thingName": "dae",
+        "property": "ctRatio8C",
+        "slaveId": 1,
+        "functionCode": "0x16",
+        "address": "0x0477"
+      },
+      {
+        "thingName": "dae",
+        "property": "commitCtRatio",
+        "slaveId": 1,
+        "functionCode": "0x05",
+        "address": "0xAF"
+      }
+    ]
+  }
+]
