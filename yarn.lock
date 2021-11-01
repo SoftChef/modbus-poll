@@ -670,10 +670,10 @@
     "@serialport/binding-abstract" "9.2.3"
     debug "^4.3.2"
 
-"@serialport/bindings@9.2.4":
-  version "9.2.4"
-  resolved "https://registry.yarnpkg.com/@serialport/bindings/-/bindings-9.2.4.tgz#3d5da86607b83b9990cbc3ea59b976194bb48acf"
-  integrity sha512-l3IHtIL9aN42Xrqu9L8g/+jZcR0jfnXwRxHslDA8YRd7Jw9lo1qL/vqiIYkvC8NAW3Iz2JdWeM7Pr98l/rwjSQ==
+"@serialport/bindings@9.2.5":
+  version "9.2.5"
+  resolved "https://registry.yarnpkg.com/@serialport/bindings/-/bindings-9.2.5.tgz#d49f6e74d780340558c4dc33546a190befd5476b"
+  integrity sha512-fyabNg56gWbOMuYJc5c45z94sANC/WzTnGeML7Nr1IYVk0SJ1uksN4ETI8Nea9ZAtr4DhNiIMQ3/IOkyof6Tqg==
   dependencies:
     "@serialport/binding-abstract" "9.2.3"
     "@serialport/parser-readline" "9.2.4"
@@ -4898,10 +4898,10 @@ progress@^2.0.0, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.31.17:
-  version "0.31.17"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.31.17.tgz#7a279578591bc7001b2bb854cf6f8f34ffd51e67"
-  integrity sha512-BJ2dAO6eXQdp0joffdtlGHIr3yBiE0m+Rg66KUW/Wn4dgKU8xsht/Vr11HbA+aa6RtEgrFbo0YgBYgP48HqYqA==
+projen@^0.31.19:
+  version "0.31.19"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.31.19.tgz#46b1179ae8afd89006a5f49a1c8bb108fdb21101"
+  integrity sha512-St6KbzkzjiB5EW8gTUa+x1awj2TotxWPuwoGrwCqtQWIWkyxuK7VY/4ydiTbLEf1JgV318gDd7+vk5/tdR0uWA==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.2"
@@ -5270,12 +5270,12 @@ semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
 serialport@^9.0.0:
-  version "9.2.4"
-  resolved "https://registry.yarnpkg.com/serialport/-/serialport-9.2.4.tgz#ea95a32897286c8eadeaa700c215376fc5604c49"
-  integrity sha512-QRn9/iYTK7qXfACskR+f2NIXwSZf/DwPQgFNRP89THFoX2sQVsMyNQZ9quB1XP5RujL7wYTRtZ/eSGSACI1d3A==
+  version "9.2.5"
+  resolved "https://registry.yarnpkg.com/serialport/-/serialport-9.2.5.tgz#23e81588336e844e8d7071742a00f501eec9f2b1"
+  integrity sha512-nsDsD2GN/43T2a8jQYr1HH76gmDZ575Ts8FOdcBRUY8ecaI16BPbXa612cPPkQjOfg28+KL5qtQL9c0vvTaidg==
   dependencies:
     "@serialport/binding-mock" "9.2.4"
-    "@serialport/bindings" "9.2.4"
+    "@serialport/bindings" "9.2.5"
     "@serialport/parser-byte-length" "9.2.4"
     "@serialport/parser-cctalk" "9.2.4"
     "@serialport/parser-delimiter" "9.2.4"
