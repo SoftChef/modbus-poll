@@ -52,3 +52,13 @@ export interface ModbusRTUBufferedClientConfig extends ModbusClientConfig {
   serialPortOptions: SerialPortOptions;
 
 }
+
+export interface ModbusAsciiSerialClientConfig extends ModbusClientConfig {
+
+  type: ModbusClientType.ModbusAsciiSerial;
+
+  path: string;
+
+  serialPortOptions: SerialPortOptions;
+
+}

@@ -24,6 +24,7 @@ import {
   ModbusRTUBufferedClientConfig,
   ModbusRTUClientConfig,
   ModbusTCPClientConfig,
+  ModbusAsciiSerialClientConfig,
 } from './constracts';
 
 type ModbusPollResult = number | Array<number | string | boolean> | { [key: string]: number | string | boolean } | undefined;
@@ -42,7 +43,7 @@ export class ModbusPoll extends EventEmitter {
   /**
    * Modbus config
    */
-  private readonly config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig;
+  private readonly config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusAsciiSerialClientConfig | ModbusTCPClientConfig;
   /**
    * All of Modbus sensors by property
    */
@@ -67,7 +68,7 @@ export class ModbusPoll extends EventEmitter {
   } = {};
 
   public constructor(
-    config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusTCPClientConfig,
+    config: ModbusRTUClientConfig | ModbusRTUBufferedClientConfig | ModbusAsciiSerialClientConfig | ModbusTCPClientConfig,
     decoders?: { [name: string]: ModbusPollDecoder },
   ) {
     super();
@@ -121,6 +122,9 @@ export class ModbusPoll extends EventEmitter {
         break;
       case ModbusClientType.ModbusRTUBuffered:
         connection = this.modbusClient.connectRTUBuffered(this.config.path, this.config.serialPortOptions);
+        break;
+      case ModbusClientType.ModbusAsciiSerial:
+        connection = this.modbusClient.connectAsciiSerial(this.config.path, this.config.serialPortOptions);
         break;
       case ModbusClientType.ModbusTCP:
         connection = this.modbusClient.connectTCP(this.config.host, {
