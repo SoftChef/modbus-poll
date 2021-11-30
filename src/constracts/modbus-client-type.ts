@@ -4,6 +4,8 @@ export enum ModbusClientType {
 
   ModbusRTUBuffered = 'ModbusRTUBuffered',
 
+  ModbusAsciiSerial = 'ModbusAsciiSerial',
+
   ModbusTCP = 'ModbusTCP'
 
 }
